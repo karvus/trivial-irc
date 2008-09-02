@@ -5,7 +5,7 @@
 (asdf:defsystem #:trivial-irc 
   :author "Thomas Stenhaug <thomas.stenhaug@gmail.com>"
   :maintainer "Thomas Stenhaug <thomas.stenhaug@gmail.com>"
-  :version "0.0.2"
+  :version "0.0.3"
   :serial t 
   :components ((:file "package")
 	       (:file "replies")

@@ -5,7 +5,7 @@
 (asdf:defsystem #:trivial-irc-echobot
   :author "Thomas Stenhaug <thomas.stenhaug@gmail.com>"
   :maintainer "Thomas Stenhaug <thomas.stenhaug@gmail.com>"
-  :version "0.0.1"
+  :version "0.0.3"
   :components
   ((:module "examples"
 	    :components

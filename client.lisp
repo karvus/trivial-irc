@@ -6,7 +6,7 @@
 
 ;;; variables
 
-(defparameter *version* "0.0.2")
+(defparameter *version* "0.0.3")
 
 (defparameter *default-quit-message*
   (format nil "trivial-irc-~a" *version*))
