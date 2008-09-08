@@ -1,5 +1,4 @@
 ;; Copyright (c) 2008 Thomas Stenhaug <thomas.stenhaug@gmail.com>.
-
 ;; See the LICENSE file for licensing information.
 
 (asdf:defsystem #:trivial-irc-echobot
