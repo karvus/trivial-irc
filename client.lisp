@@ -163,7 +163,7 @@ disconnected, and the `connection-closed' will be signalled."))
     :initform nil)
    (server
     :initarg :server
-    :initform (error "must supply :nickname"))
+    :initform (error "must supply :server"))
    (socket
     :initarg :socket
     :reader socket)
