@@ -356,18 +356,6 @@ Called by `connect' during registration."
       (send-raw-message client
 			(format nil "QUIT :~a" message)))))
 
-(defun prefix-nickname (prefix)
-  "Return the nickname in extracted from /prefix/."  
-  (first (parse-prefix prefix)))
-
-(defun prefix-servername (prefix)
-  "Return the servername extracted from /prefix/."  
-  (first (parse-prefix prefix)))
-
-(defun servername-or-nickname (prefix)
-  "Return the servername or nickname from /prefix-string/."
-  (first (parse-prefix prefix)))
-
 (defun parse-prefix (prefix)
   "Return a list of the components in prefix.
 

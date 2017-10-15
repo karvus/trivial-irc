@@ -18,14 +18,11 @@
    #:handle
    #:nickname
    #:parse-prefix
-   #:prefix-nickname
-   #:prefix-servername
    #:receive-message
    #:send-join
    #:send-privmsg
    #:send-pong
    #:send-raw-message
-   #:server-or-nick
    #:user
    )
   (:documentation "Trivial IRC client library.
