@@ -216,7 +216,8 @@ having @c(connect) return a @c(client) instance."))
 			     :direction :output
 			     :if-exists :append
 			     :if-does-not-exist :create)))
-    ;; try to connect, signal connection-failed if
+    ;; Try to connect and register, signal connection-failed if an
+    ;; error occurs.
     (handler-case
 	(progn 
 	  (setf socket
