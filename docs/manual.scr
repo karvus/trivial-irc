@@ -3,7 +3,7 @@
 
 trivial-irc is an IRC client library with simple facilities for
 receiving, handling and sending messages, and without facilities for
-CTCP.  This is it's API documentation, extracted from the
+CTCP.  This is its API documentation, extracted from the
 documentation strings in the source code.
 @end(section)
 
