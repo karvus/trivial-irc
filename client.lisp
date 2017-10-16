@@ -121,7 +121,8 @@ to @c(*standard-output*)."))
 
 (defgeneric send-privmsg (client victim message)
   (:documentation
-   "Send @i(message) to @i(victim), where @i(victim) is either a channel- or nick-name."))
+   "Send @i(message) to @i(victim), where @i(victim) is either a
+   channel- or nick-name."))
 
 (defgeneric socket (client)
   (:documentation "Return the @i(client)'s socket."))
@@ -183,13 +184,15 @@ disconnected, and @c(connection-closed) will be signalled."))
 
 Valid initargs are:
 
-- `:nickname' -- the nickname  use when connecting (required)
-- `:server' -- the hostname of the server to connect to as a string (required)
-- `:port' -- the port to connect to as an integer (optional)
-- `:username' -- the username to register with (optional)
-- `:realname' -- the realname to register with (optional)
-- `:password' -- the password to regiseter with (optional)
-- `:log-pathname' -- pathname for packet-log pathname (optional)
+@begin(list)
+@item(@c(:nickname) -- the nickname  use when connecting (required))
+@item(@c(:server) -- the hostname of the server to connect to as a string (required))
+@item(@c(:port) -- the port to connect to as an integer (optional))
+@item(@c(:username) -- the username to register with (optional))
+@item(@c(:realname) -- the realname to register with (optional))
+@item(@c(:password) -- the password to regiseter with (optional))
+@item(@c(:log-pathname) -- pathname for packet-log pathname (optional))
+@end(list)
 
 Please note that you call @c(connect) on a @c(client) instance, rather than
 having @c(connect) return a @c(client) instance."))

@@ -21,14 +21,15 @@
 The echobot will echo all messages sent to it, or to any channel it's
 in.
 
-This is meant as a simple example of how to use the `trivial-irc'
+This is meant as a simple example of how to use the @c(trivial-irc)
 library.  To give it a sping, customize the variables in echobot.lisp,
 and do something like this:
 
---
-;; (asdf:oos 'asdf:load-op :trivial-irc-echobot)
-;; (trivial-echobot:start)
---
+@begin[lang=lisp](code)
+(asdf:oos 'asdf:load-op :trivial-irc-echobot)
+(trivial-echobot:start)
+@end(code)
+
 
 Note that you probably don't want to make it join a channel someone
 actually uses, as it's quite annoying."))

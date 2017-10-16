@@ -35,10 +35,10 @@
   ()
   (:documentation "A simple irc-bot that echoes anything it sees.
 
-Valid initargs are the same as for `trivial-irc:client'."))
+Valid initargs are the same as for @c(trivial-irc:client)."))
 
 (defun start ()
-  "Set up echobot, bind it to `*echobot*' and enter the `receive-loop'."
+  "Set up echobot, bind it to @c(*echobot*) and enter the @c(receive-loop)."
   (assert (null *echobot*))
   (setf *echobot* (make-instance 'echobot
 				 :log-pathname *log-pathname*
@@ -57,7 +57,7 @@ Valid initargs are the same as for `trivial-irc:client'."))
   (stop))
 
 (defun stop ()
-  "Stop and `disconnect' the echobot."
+  "Stop and @c(disconnect) the echobot."
   (ignore-errors (disconnect *echobot*))
   (setf *echobot* nil))
 
