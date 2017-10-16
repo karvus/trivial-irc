@@ -1,0 +1,30 @@
+@begin(section)
+@title(Overview)
+
+Provide an IRC client library with simple facilities for receiving,
+handling and sending messages, and without facilities for CTCP.
+
+@end(section)
+
+@begin(section)
+@title(Reference)
+@cl:with-package[name="trivial-irc"](
+@cl:doc(condition connection-closed)
+@cl:doc(condition connection-failed)
+@cl:doc(condition connection-lost)
+@cl:doc(macro define-handler)
+@cl:doc(generic change-nick)
+@cl:doc(generic connect)
+@cl:doc(generic connected-p)
+@cl:doc(generic disconnect)
+@cl:doc(generic handle)
+@cl:doc(generic nickname)
+@cl:doc(generic receive-message)
+@cl:doc(generic send-join)
+@cl:doc(generic send-privmsg)
+@cl:doc(generic socket)
+@cl:doc(function send-raw-message)
+)
+@end(section)
+
+
