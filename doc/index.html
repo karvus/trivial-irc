@@ -1,74 +1,69 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
-	  "http://www.w3.org/TR/html4/strict.dtd">
-<html>
+<!DOCTYPE html>
+<html lang="en">
   <head>
-    <title>trivial-irc -- A trivial Common Lisp IRC client library</title>
-    <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>
+  index &ndash; Trivial IRC
+</title>
+    <link rel="stylesheet" href="static/style.css"/>
+    
+  <link rel="stylesheet" href="static/highlight.css"/>
+  <script src="static/highlight.js"></script>
+  <style>
+   /* Highlight the current top-level TOC item, and hide the TOC of all other items */
+
+   .toc a[data-node="index"] {
+       color: #AD3108;
+   }
+
+   .toc ol {
+       display: none;
+   }
+
+   .toc > ol {
+       display: block;
+   }
+
+   .toc li a[data-node="index"] + ol {
+       display: block;
+   }
+
+   .toc li a[data-node="index"] + ol li {
+       font-size: 16px;
+       margin: 0 10px;
+   }
+
+   .toc li a[active] + ol li:first-child {
+       margin-top: 5px;
+   }
+  </style>
+
   </head>
   <body>
-
     
-    
-    <h1>trivial-irc -- A trivial Common Lisp IRC client library</h1>
+  <h1 class="doc-title">Trivial IRC » index</h1>
+  <article id="article" data-section="index">
+    <aside>
+      <ol class="toc"><li><a href="index.html" data-node="index">index</a></li><li><a href="reference.html" data-node="reference">Reference</a><ol><li><a href="conditions.html" data-node="conditions">Conditions</a></li><li><a href="macros.html" data-node="macros">Macros</a></li><li><a href="generics.html" data-node="generics">Generics</a></li><li><a href="functions.html" data-node="functions">Functions</a></li><li><a href="class.html" data-node="class">Class</a></li></ol></li></ol>
+    </aside>
+    <main class="codex-section">
+      <p>trivial-irc is an IRC client library with simple facilities for
+receiving, handling and sending messages, and without facilities for
+CTCP.  This is its API documentation, extracted from the
+documentation strings in the source code.
+</p>
+    </main>
+  </article>
+  <footer>
+    <div class="info">
+      Created with <a href="https://github.com/CommonDoc/codex">Codex</a>.
+    </div>
+  </footer>
+  <script>
+   HighlightLisp.highlight_auto();
+  </script>
 
-    <h2>Version</h2>
-
-    <p>
-      This documentation corresponds to the upcoming version 0.0.3 of
-      trivial-irc.
-    </p>
-
-    <h2>Download</h2>
-
-    <p>
-      (Will add link to tarball as soon as I decide where to host them.)
-    </p>
-
-    <h2>Source repository</h2>
-
-    <p>
-      <a href="http://github.com/karvus/trivial-irc/">
-	http://github.com/karvus/trivial-irc/
-      </a>
-    </p>
-
-    <h2>Summary</h2>
-
-    <p>
-      trivial-irc is a (very) trivial IRC client library.  Currently,
-      there are no facilities for CTCP, and only very simple
-      facilities for receiving, handling and sending messages.  It
-      might evolve over time, and it's my intention to keep the
-      current API available, and to keep it asdf-installable.
-    </p>
-
-    <p>
-      It has been tested on Allegro 8.1 and SBCL 1.0.18 on Linux.  It
-      should work on any system that
-      <a href="http://common-lisp.net/project/usocket/">usocket</a> and
-      <a href="http://www.weitz.de/cl-ppcre/">cl-ppcre</a> works on.
-    </p>
-
-    <h2>Direct dependencies</h2>
-
-    <ul>
-      <li><a href="http://common-lisp.net/project/usocket/">usocket</a></li>
-      <li><a href="http://www.weitz.de/cl-ppcre/">cl-ppcre</a></li>      
-    </ul>
-    
-    <h2>API documentation (generated from sources)</h2>
-
-    <ul>
-      <li><a href="trivial-irc.html">trivial-irc</a></li>
-      <li><a href="trivial-irc-echobot.html">trivial-irc-echobot</a></li>
-    </ul>
-
-    <hr>
-    <address>
-      2008-08-31,
-      Thomas Stenhaug
-      <a href="mailto:thomas.stenhaug@gmail.com">thomas.stenhaug@gmail.com</a>
-
-    </address>
   </body>
 </html>

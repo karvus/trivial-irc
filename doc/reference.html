@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>
+  Reference &ndash; Trivial IRC
+</title>
+    <link rel="stylesheet" href="static/style.css"/>
+    
+  <link rel="stylesheet" href="static/highlight.css"/>
+  <script src="static/highlight.js"></script>
+  <style>
+   /* Highlight the current top-level TOC item, and hide the TOC of all other items */
+
+   .toc a[data-node="reference"] {
+       color: #AD3108;
+   }
+
+   .toc ol {
+       display: none;
+   }
+
+   .toc > ol {
+       display: block;
+   }
+
+   .toc li a[data-node="reference"] + ol {
+       display: block;
+   }
+
+   .toc li a[data-node="reference"] + ol li {
+       font-size: 16px;
+       margin: 0 10px;
+   }
+
+   .toc li a[active] + ol li:first-child {
+       margin-top: 5px;
+   }
+  </style>
+
+  </head>
+  <body>
+    
+  <h1 class="doc-title">Trivial IRC » Reference</h1>
+  <article id="article" data-section="reference">
+    <aside>
+      <ol class="toc"><li><a href="index.html" data-node="index">index</a></li><li><a href="reference.html" data-node="reference">Reference</a><ol><li><a href="reference.html#conditions" data-node="conditions">Conditions</a></li><li><a href="reference.html#macros" data-node="macros">Macros</a></li><li><a href="reference.html#generics" data-node="generics">Generics</a></li><li><a href="reference.html#functions" data-node="functions">Functions</a></li><li><a href="reference.html#class" data-node="class">Class</a></li></ol></li></ol>
+    </aside>
+    <main class="codex-section">
+      <h1 id="conditions">Conditions</h1><p>
+<div class="codex-doc-node codex-record codex-condition"><code class="codex-name">connection-closed</code><div class="codex-docstring"><p>Signalled by the <code>disconnect</code> function.</p><p>Disconnecting is the default action whenever an error occurs, so this
+signal can for example be handled to reconnect.</p></div><ul class="codex-slot-list"><li class="codex-slot codex-class-slot"><code class="codex-name">client</code><div class="codex-docstring">Client whose connection was closed</div></li></ul></div>
+<div class="codex-doc-node codex-record codex-condition"><code class="codex-name">connection-failed</code><div class="codex-docstring">Signalled by <code>connect</code>.</div><ul class="codex-slot-list"><li class="codex-slot codex-class-slot"><code class="codex-name">client</code><div class="codex-docstring">Client whose connection failed</div></li><li class="codex-slot codex-class-slot"><code class="codex-name">error</code><div class="codex-docstring">Reason for failure</div></li></ul></div>
+<div class="codex-doc-node codex-record codex-condition"><code class="codex-name">connection-lost</code><div class="codex-docstring"><p>Signalled when connection is lost.</p><p>Currently signalled when an error occurs during trying to receive a
+message from the server.</p></div><ul class="codex-slot-list"><li class="codex-slot codex-class-slot"><code class="codex-name">client</code><div class="codex-docstring">Client whose connection was lost</div></li></ul></div>
+
+</p><h1 id="macros">Macros</h1>
+
+<div class="codex-doc-node codex-operator codex-macro"><code class="codex-name">define-handler</code><code class="codex-lambda-list">((command class-spec prefix-var arguments-var) &amp;body body)</code><div class="codex-docstring"><p>Define handling for <code>command</code>.</p><p>This is currently a convenience for specializing on the generic
+function <code>handle</code>.  An example is the handler for PING
+messages (which by default is the only handler specialization).</p><pre><code class="lisp">(define-handler (:ping client prefix arguments)
+  (send-pong client (first arguments)))
+</code></pre><p>If you wanted to use a different variable-name for the client
+variable, you could also have written it as</p><pre><code class="lisp">(define-handler (:ping (client client) prefix arguments)
+  (send-pong client (first arguments)))
+</code></pre><p>
+</p></div></div>
+
+<h1 id="generics">Generics</h1>
+
+<div class="codex-doc-node codex-operator codex-generic-function"><code class="codex-name">change-nick</code><code class="codex-lambda-list">(client new-nickname)</code><div class="codex-docstring">Send NICK message to server, and set the <code>nickname</code>
+  of <code class="codex-param">client</code></div></div>
+<div class="codex-doc-node codex-operator codex-generic-function"><code class="codex-name">connect</code><code class="codex-lambda-list">(client)</code><div class="codex-docstring"><p>Connect and register <code class="codex-param">client</code> with an IRC server.</p><p>This also sets up some of the slots, and opens the log-stream.</p></div></div>
+<div class="codex-doc-node codex-operator codex-generic-function"><code class="codex-name">connected-p</code><code class="codex-lambda-list">(client)</code><div class="codex-docstring">Return <code>t</code> if <code class="codex-param">client</code> is connected, <code>nil</code> otherwise.</div></div>
+<div class="codex-doc-node codex-operator codex-generic-function"><code class="codex-name">disconnect</code><code class="codex-lambda-list">(client &amp;key message)</code><div class="codex-docstring"><p>Send QUIT message to server, close the socket and close the log-stream.</p><p>Always signals <code>connection-closed</code>.</p></div></div>
+<div class="codex-doc-node codex-operator codex-generic-function"><code class="codex-name">handle</code><code class="codex-lambda-list">(command client prefix arguments)</code><div class="codex-docstring"><p>Called by <code>receive-message</code> after parsing the raw message.</p><p>Specialize on this function with the macro <code>define-handler</code> for customizing
+behaviour.</p><p>There is a default method that spits out the unhandled message
+to <code>*standard-output*</code>.</p></div></div>
+<div class="codex-doc-node codex-operator codex-generic-function"><code class="codex-name">nickname</code><code class="codex-lambda-list">(client)</code><div class="codex-docstring">Return current nickname of <code class="codex-param">client</code>.</div></div>
+<div class="codex-doc-node codex-operator codex-generic-function"><code class="codex-name">receive-message</code><code class="codex-lambda-list">(client)</code><div class="codex-docstring"><p>Read a message from <i>connection</i>, parse it,
+  <code>handle</code>, and return a list with the following 3 elements:</p><ol><li>the raw prefix string, or <code>nil</code> if prefix wasn't present</li><li><i>command</i> is a keyword with a name corresponding to the command from the RFC and</li><li><i>parsed-parameters</i> is a list of strings representing the arguments in the message.</li></ol><p>If an error occurs during the reading, the client will be
+disconnected, and <code>connection-closed</code> will be signalled.</p></div></div>
+<div class="codex-doc-node codex-operator codex-generic-function"><code class="codex-name">send-join</code><code class="codex-lambda-list">(client channel &amp;key password)</code><div class="codex-docstring">Send JOIN message.</div></div>
+<div class="codex-doc-node codex-operator codex-generic-function"><code class="codex-name">send-privmsg</code><code class="codex-lambda-list">(client victim message)</code><div class="codex-docstring">Send <code class="codex-param">message</code> to <code class="codex-param">victim</code>, where <code class="codex-param">victim</code> is either a
+   channel- or nick-name.</div></div>
+<div class="codex-doc-node codex-operator codex-generic-function"><code class="codex-name">socket</code><code class="codex-lambda-list">(client)</code><div class="codex-docstring">Return the <code class="codex-param">client</code>'s socket.</div></div>
+
+<h1 id="functions">Functions</h1>
+
+<div class="codex-doc-node codex-operator codex-function"><code class="codex-name">parse-prefix</code><code class="codex-lambda-list">(prefix)</code><div class="codex-docstring"><p>Return a list of the components in prefix.</p><p>The elements of the list are as follows:
+</p><ul><li>servername or nickname as string</li><li>username string, or <code>nil</code></li><li>a hostname string, or <code>nil</code></li></ul></div></div>
+<div class="codex-doc-node codex-operator codex-function"><code class="codex-name">send-raw-message</code><code class="codex-lambda-list">(client raw-message)</code><div class="codex-docstring"><p>Send <code class="codex-param">raw-message</code> and CRLF to the socket associated with <code class="codex-param">client</code>.</p><p>Outside of the few send-* functions, this is what you have to use to
+send messages to the server.</p></div></div>
+
+<h1 id="class">Class</h1>
+
+<div class="codex-doc-node codex-record codex-class"><code class="codex-name">client</code><div class="codex-docstring"><p>A client connection to an IRC server.</p><p>Valid initargs are:</p><ul><li><code>:nickname</code> -- the nickname  use when connecting (required)</li><li><code>:server</code> -- the hostname of the server to connect to as a string (required)</li><li><code>:port</code> -- the port to connect to as an integer (optional)</li><li><code>:username</code> -- the username to register with (optional)</li><li><code>:realname</code> -- the realname to register with (optional)</li><li><code>:password</code> -- the password to regiseter with (optional)</li><li><code>:log-pathname</code> -- pathname for packet-log pathname (optional)</li></ul><p>Please note that you call <code>connect</code> on a <code>client</code> instance, rather than
+having <code>connect</code> return a <code>client</code> instance.</p></div><ul class="codex-slot-list"><li class="codex-slot codex-class-slot"><code class="codex-name">nickname</code><div class="codex-docstring">Nickname of client (mandatory).  Sent at beginning
+    of connection, and by <code>change-nick</code></div></li><li class="codex-slot codex-class-slot"><code class="codex-name">password</code><div class="codex-docstring">Password used during registration (optional)</div></li><li class="codex-slot codex-class-slot"><code class="codex-name">username</code><div class="codex-docstring">Username sent at beginning of connection. Defaults
+    to nickname.</div></li><li class="codex-slot codex-class-slot"><code class="codex-name">realname</code><div class="codex-docstring">Realname sent at beginning of connection.
+    Defaults to username.</div></li><li class="codex-slot codex-class-slot"><code class="codex-name">server</code><div class="codex-docstring">Address of the IRC server</div></li><li class="codex-slot codex-class-slot"><code class="codex-name">port</code><div class="codex-docstring">Port of client connection</div></li><li class="codex-slot codex-class-slot"><code class="codex-name">socket</code><div class="codex-docstring">Socket of an active connection</div></li><li class="codex-slot codex-class-slot"><code class="codex-name">log-pathname</code><div class="codex-docstring">Pathname of log-file</div></li><li class="codex-slot codex-class-slot"><code class="codex-name">log-stream</code><div class="codex-docstring">Stream of log-file</div></li></ul></div>
+
+<p>
+</p>
+    </main>
+  </article>
+  <footer>
+    <div class="info">
+      Created with <a href="https://github.com/CommonDoc/codex">Codex</a>.
+    </div>
+  </footer>
+  <script>
+   HighlightLisp.highlight_auto();
+  </script>
+
+  </body>
+</html>
