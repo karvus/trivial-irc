@@ -18,6 +18,8 @@
    #:handle
    #:nickname
    #:parse-prefix
+   #:prefix-nickname
+   #:prefix-servername
    #:receive-message
    #:send-join
    #:send-privmsg

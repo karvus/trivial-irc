@@ -369,15 +369,20 @@ Called by `connect' during registration."
 (defun parse-prefix (prefix)
   "Return a list of the components in prefix.
 
-It is a list on the form ( /server-or-nickname/ /username/ /host/) where
-
-- /servername-or-nickname/ is a servername or a nickname,
-- /username/ is a username, or `nil'
-- /host/ is a hostname, or `nil'
-
-This can potentially be used to build other abstractions later."
+Elements in the list are It is a list on the form ( /server-or-nickname/ /username/ /host/) where
+@begin(list)
+@item(@c(servername-or-nickname) is a servername or a nickname)
+@item(username is a username, or @c(nil))
+@item(host is a hostname, or @c(nil))
+@end(list)"
   (when prefix
     (cl-ppcre:split "(!|@)" prefix)))
+
+(defun prefix-nickname (prefix)
+  (first (parse-prefix prefix)))
+
+(defun prefix-servername (prefix)
+  (first (parse-prefix prefix)))
 
 (defun record (client string)
   (with-slots (log-stream) client
