@@ -93,7 +93,7 @@ This also sets up some of the slots, and opens the log-stream."))
 
 (defgeneric connected-p (client)
   (:documentation
-   "Return @c(t) if @i(client) is connected, @c(nil) otherwise."))
+   "Return @c(t) if @cl:param(client) is connected, @c(nil) otherwise."))
 
 (defgeneric disconnect (client &key message)
   (:documentation
@@ -121,11 +121,11 @@ to @c(*standard-output*)."))
 
 (defgeneric send-privmsg (client victim message)
   (:documentation
-   "Send @i(message) to @i(victim), where @i(victim) is either a
+   "Send @cl:param(message) to @cl:param(victim), where @cl:param(victim) is either a
    channel- or nick-name."))
 
 (defgeneric socket (client)
-  (:documentation "Return the @i(client)'s socket."))
+  (:documentation "Return the @cl:param(client)'s socket."))
 
 (defgeneric receive-message (client)
   (:documentation "Read a message from @i(connection), parse it,
