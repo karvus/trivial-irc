@@ -253,8 +253,8 @@ having @c(connect) return a @c(client) instance."))
     (record client raw-message)
     (destructuring-bind (prefix command arguments)
 	(parse-raw-message raw-message)
-      (handle command client prefix arguments))
-    raw-message))
+      (handle command client prefix arguments)
+      (list prefix command arguments))))
 
 (defmethod send-join ((client client) channel &key password)
   (send-raw-message client
