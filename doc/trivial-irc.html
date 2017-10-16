@@ -1,0 +1,33 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+"http://www.w3.org/TR/html4/strict.dtd">
+<html><head><title>The TRIVIAL-IRC package.</title><meta http-equiv="Content-Type" content="text/html;charset=utf-8"><style TYPE="text/css">
+h3 {
+  font-size: 100%;
+}
+
+pre {
+  background-color: #eeeeff;
+  margin-left: 1em;
+  padding: 5px;
+}
+
+</style></head><body><p><i>Rendered 2008-08-30 23:42:09</i></p><h1>The TRIVIAL-IRC package.</h1><h3>Uses </h3><ul><li><code>common-lisp</code> </li></ul><h3>Description</h3><P>Trivial IRC client library.</P><P>See <CODE>examples/echobot/</CODE> in the distribution directory for a simple
+example of how to use it.</P><P>Currently, the exposed API is a very thin abstraction of the IRC
+protocol, and you probably need the IRC RFC to make use of it.</P><P>The current version was slapped together in a few hours, to fill a
+specific need I had.  It's not certain that it will evolve with much,
+but I'm open to suggestions and requests.</P><P>If you have a better fit for trivial-irc and want to claim the
+name, just let me know and I'll retire this.</P><h2>Classes</h2><dl><dt><b>client </b><i>()</i></dt><dd><P>A client connection to an IRC server.</P><P>Valid initargs are:</P><UL><LI><CODE>:nickname</CODE> -- the nickname  use when connecting (required)</LI><LI><CODE>:server</CODE> -- the hostname of the server to connect to as a string (required)</LI><LI><CODE>:port</CODE> -- the port to connect to as an integer (optional)</LI><LI><CODE>:username</CODE> -- the username to register with (optional)</LI><LI><CODE>:realname</CODE> -- the realname to register with (optional)</LI><LI><CODE>:password</CODE> -- the password to regiseter with (optional)</LI><LI><CODE>:log-pathname</CODE> -- pathname for packet-log pathname (optional)</LI></UL><P>Please note that you call <CODE>connect</CODE> on an instance of <CODE>client</CODE>, instead of
+having <CODE>connect</CODE> return a an instance instance.</P></dd></dl><h2>Conditions</h2><dl><dt><b>connection-closed</b> (condition)</dt><dd><P>Signalled by <CODE>disconnect</CODE>.</P><P>Disconnecting is the default action whenever an error occurs, so this
+signal can for example be handled to reconnect.</P></dd><dt><b>connection-failed</b> (error)</dt><dd><P>Signalled by <CODE>connect</CODE>.</P></dd><dt><b>connection-lost</b> (error)</dt><dd><P>Signalled when connection is lost.</P><P>Currently signalled when an error occurs during trying to receive a
+message from the server.</P></dd></dl><h2>Macros</h2><dl><dt><b>define-handler</b><i>(command class-spec prefix-var arguments-var) &amp;body body </i></dt><dd><P>Define handling for <I>command</I>.</P><P>This is currently a convenience for specializing on <CODE>handle</CODE>.  An
+example is the handler for PING messages (which by default is the only
+handler specialization).</P><PRE>;; (define-handler (:ping client prefix arguments)
+;;    (send-pong client (first arguments)))</PRE><P>
+If you wanted to use a different variable-name for the client
+variable, you could also have written it as</P><PRE>;; (define-handler (:ping (client client) prefix arguments)
+;;   (send-pong client (first arguments)))</PRE></dd></dl><h2>Generic functions</h2><dl><dt><b>connect</b><i>client </i></dt><dd><P>Connect and register <I>client</I> with an IRC server.</P><P>This also sets up some of the slots, and opens the log-stream.</P></dd><dt><b>connected-p</b><i>client </i></dt><dd><P>Return <CODE>t</CODE> if <I>client</I> is connected, <CODE>nil</CODE> otherwise.</P></dd><dt><b>disconnect</b><i>client &amp;key message </i></dt><dd><P>Send QUIT message to server, close the socket and close the log-stream.</P><P>Always signals <CODE>connection-closed</CODE>.</P></dd><dt><b>handle</b><i>command client prefix arguments </i></dt><dd><P>Called by <CODE>receive-message</CODE> after parsing the raw message.</P><P>Specialize this with the macro <CODE>define-handler</CODE> for customizing the
+behaviour.</P><P>There is a default method that spits out the unhandled message
+to <CODE>*standard-output*</CODE>.</P></dd><dt><b>nickname</b><i>client </i></dt><dd><P>Return current nickname of <I>client</I>.</P></dd><dt><b>receive-message</b><i>client </i></dt><dd><P>Read a message from <I>connnection</I>, parse it,
+  <CODE>handle</CODE>, and return the parsed bits.</P><P>The return value is a list with (/raw-prefix/ <I>command</I> <I>parsed-parameters</I>), where</P><UL><LI><I>raw-prefix</I> is the raw prefix string, or <CODE>nil</CODE> if prefix wasn't present,</LI><LI><I>command</I> is a keyword with a name corresponding to the command from the RFC and</LI><LI><I>parsed-parameters</I> is a list of strings representing the arguments in the message.</LI></UL><P>If an error occurs during the reading, the client will be
+disconnected, and the <CODE>connection-closed</CODE> will be signalled.</P></dd><dt><b>send-join</b><i>client channel &amp;key password </i></dt><dd><P>Send JOIN message.</P></dd><dt><b>send-pong</b><i>client message </i></dt><dd><P>Send PONG command to server.</P></dd><dt><b>send-privmsg</b><i>client victim message </i></dt><dd><P>Send <I>message</I> to <I>victim</I>.</P><P><I>victim</I> can be either a channel-name or a nickname.</P></dd></dl><h2>Functions</h2><dl><dt><b>parse-prefix</b><i>prefix </i></dt><dd><P>Return a list of the components in prefix.</P><P>It is a list on the form ( <I>server-or-nickname</I> <I>username</I> <I>host</I>) where</P><UL><LI><I>servername-or-nickname</I> is a servername or a nickname,</LI><LI><I>username</I> is a username, or <CODE>nil</CODE></LI><LI><I>host</I> is a hostname, or <CODE>nil</CODE></LI></UL><P>This can potentially be used to build other abstractions later.</P></dd><dt><b>prefix-nickname</b><i>prefix </i></dt><dd><P>Return the nickname in extracted from <I>prefix</I>.</P></dd><dt><b>prefix-servername</b><i>prefix </i></dt><dd><P>Return the servername extracted from <I>prefix</I>.</P></dd><dt><b>send-raw-message</b><i>client raw-message </i></dt><dd><P>Send <I>raw-message</I> and CRLF to the socket associated with <I>client</I>.</P><P>Outside of the few send-* functions, this is what you have to use to
+send messages to the server.</P></dd></dl></body></html>

@@ -1,0 +1,20 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+"http://www.w3.org/TR/html4/strict.dtd">
+<html><head><title>The TRIVIAL-IRC-ECHOBOT package.</title><meta http-equiv="Content-Type" content="text/html;charset=utf-8"><style TYPE="text/css">
+h3 {
+  font-size: 100%;
+}
+
+pre {
+  background-color: #eeeeff;
+  margin-left: 1em;
+  padding: 5px;
+}
+
+</style></head><body><p><i>Rendered 2008-08-30 23:42:46</i></p><h1>The TRIVIAL-IRC-ECHOBOT package.</h1><h3>Uses </h3><ul><li><code>common-lisp</code> </li><li><code>trivial-irc</code> </li></ul><h3>Description</h3><P>A trivial echobot.</P><P>The echobot will echo all messages sent to it, or to any channel it's
+in.</P><P>This is meant as a simple example of how to use the <CODE>trivial-irc</CODE>
+library.  To give it a sping, customize the variables in echobot.lisp,
+and do something like this:</P><PRE>;; (asdf:oos 'asdf:load-op :trivial-irc-echobot)
+;; (trivial-echobot:start)</PRE><P>
+Note that you probably don't want to make it join a channel someone
+actually uses, as it's quite annoying.</P><h2>Variables</h2><dl><dt><b>*channels*</b></dt><dd><P>A list of channels to after registering with server.</P></dd><dt><b>*echobot*</b></dt><dd><P>The current <CODE>echobot</CODE>.</P></dd><dt><b>*nickname*</b></dt><dd><P>Nickname of the <CODE>echobot</CODE>.</P></dd><dt><b>*port*</b></dt><dd><P>The port to connect to.</P></dd><dt><b>*server*</b></dt><dd><P>The server to connect to.</P></dd></dl><h2>Classes</h2><dl><dt><b>echobot </b><i>(client)</i></dt><dd><P>A simple irc-bot that echoes anything it sees.</P><P>Valid initargs are the same as for <CODE>trivial-irc:client</CODE>.</P></dd></dl><h2>Functions</h2><dl><dt><b>receive-loop</b><i></i></dt><dd><P>Receive messages until interrupted.</P></dd><dt><b>start</b><i></i></dt><dd><P>Set up echobot, bind it to <CODE>*echobot*</CODE> and enter the <CODE>receive-loop</CODE>.</P></dd><dt><b>stop</b><i></i></dt><dd><P>Stop and <CODE>disconnect</CODE> the echobot.</P></dd></dl></body></html>
