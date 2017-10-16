@@ -143,43 +143,46 @@ disconnected, and @c(connection-closed) will be signalled."))
 ;;; class
 
 (defclass client ()
-  ((log-pathname
+  ((nickname
+    :initarg :nickname
+    :reader nickname
+    :initform (error "must supply :nickname")
+    :documentation "Nickname of client (mandatory).  Sent at beginning
+    of connection, and by @c(change-nick)")
+   (password
+    :initarg :password
+    :initform nil
+    :documentation "Password used during registration (optional)")
+   (username
+    :initarg :username
+    :initform nil
+    :documentation "Username sent at beginning of connection. Defaults
+    to nickname.")
+   (realname
+    :initarg :realname
+    :initform nil
+    :documentation "Realname sent at beginning of connection.
+    Defaults to username.")
+   (server
+    :initarg :server
+    :initform (error "must supply :server")
+    :documentation "Address of the IRC server")   
+   (port
+    :initarg :port
+    :initform 6667
+    :documentation "Port of client connection")
+   (socket
+    :initarg :socket
+    :initform nil
+    :reader socket
+    :documentation "Socket of an active connection")
+   (log-pathname
     :initarg :log-pathname
     :initform nil
     :documentation "Pathname of log-file")
    (log-stream
     :initform nil
-    :documentation "Sink for @c(record)")
-   (nickname
-    :initarg :nickname
-    :reader nickname
-    :initform (error "must supply :nickname")
-    :documentation "Used for RFC 2812 3.1.2")
-   (password
-    :initarg :password
-    :initform nil
-    :documentation "Used for RFC 2812 3.1.1")
-   (port
-    :initarg :port
-    :initform 6667
-    :documentation "Connection's port")
-   (realname
-    :initarg :realname
-    :initform nil
-    :documentation "RFC 2812 NICK")
-   (server
-    :initarg :server
-    :initform (error "must supply :server")
-    :documentation "String representing the server-end of the desired connection")
-   (socket
-    :initarg :socket
-    :initform nil
-    :reader socket
-    :documentation "A usocket:socket during a connection, @c(nil) otherwise")
-   (username
-    :initarg :username
-    :initform nil
-    :documentation "teh oosurnem"))
+    :documentation "Stream of log-file"))
   (:documentation "A client connection to an IRC server.
 
 Valid initargs are:
