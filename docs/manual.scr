@@ -8,10 +8,27 @@ handling and sending messages, and without facilities for CTCP.
 
 @begin(section)
 @title(Reference)
+
+@begin(section)
+@title(Conditions)
+
 @cl:with-package[name="trivial-irc"](
 @cl:doc(condition connection-closed)
 @cl:doc(condition connection-failed)
 @cl:doc(condition connection-lost)
+)
+@end(section)
+
+@begin(section)
+@title(Macros)
+@cl:with-package[name="trivial-irc"](
+@cl:doc(macro define-handler)
+)
+@end(section)
+
+@begin(section)
+@title(Generics)
+@cl:with-package[name="trivial-irc"](
 @cl:doc(macro define-handler)
 @cl:doc(generic change-nick)
 @cl:doc(generic connect)
@@ -27,4 +44,12 @@ handling and sending messages, and without facilities for CTCP.
 )
 @end(section)
 
+@begin(section)
+@title(Class)
+@cl:with-package[name="trivial-irc"](
+@cl:doc(class client)
+)
+@end(section)
 
+
+@end(section)
