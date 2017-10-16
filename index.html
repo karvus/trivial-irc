@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>
+  index &ndash; Trivial IRC
+</title>
+    <link rel="stylesheet" href="static/style.css"/>
+    
+  <link rel="stylesheet" href="static/highlight.css"/>
+  <script src="static/highlight.js"></script>
+  <style>
+   /* Highlight the current top-level TOC item, and hide the TOC of all other items */
+
+   .toc a[data-node="index"] {
+       color: #AD3108;
+   }
+
+   .toc ol {
+       display: none;
+   }
+
+   .toc > ol {
+       display: block;
+   }
+
+   .toc li a[data-node="index"] + ol {
+       display: block;
+   }
+
+   .toc li a[data-node="index"] + ol li {
+       font-size: 16px;
+       margin: 0 10px;
+   }
+
+   .toc li a[active] + ol li:first-child {
+       margin-top: 5px;
+   }
+  </style>
+
+  </head>
+  <body>
+    
+  <h1 class="doc-title">Trivial IRC » index</h1>
+  <article id="article" data-section="index">
+    <aside>
+      <ol class="toc"><li><a href="index.html" data-node="index">index</a></li><li><a href="reference.html" data-node="reference">Reference</a><ol><li><a href="conditions.html" data-node="conditions">Conditions</a></li><li><a href="macros.html" data-node="macros">Macros</a></li><li><a href="generics.html" data-node="generics">Generics</a></li><li><a href="functions.html" data-node="functions">Functions</a></li><li><a href="class.html" data-node="class">Class</a></li></ol></li></ol>
+    </aside>
+    <main class="codex-section">
+      <p>trivial-irc is an IRC client library with simple facilities for
+receiving, handling and sending messages, and without facilities for
+CTCP.  This is its API documentation, extracted from the
+documentation strings in the source code.
+</p>
+    </main>
+  </article>
+  <footer>
+    <div class="info">
+      Created with <a href="https://github.com/CommonDoc/codex">Codex</a>.
+    </div>
+  </footer>
+  <script>
+   HighlightLisp.highlight_auto();
+  </script>
+
+  </body>
+</html>
