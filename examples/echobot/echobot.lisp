@@ -64,19 +64,19 @@ Valid initargs are the same as for @c(trivial-irc:client)."))
 (defun receive-loop ()
   "Receive messages until interrupted."
   (with-simple-restart (abort "Exit from receive-loop without quitting")
-  (loop
-    (with-simple-restart (continue "Continue echobot recieve-loop")
-      (receive-message *echobot*)))))
+    (loop
+       (with-simple-restart (continue "Continue echobot receive-loop")
+         (receive-message *echobot*)))))
 
 ;;; handlers
 
-;; join our channel as soon as server welcomes us
+;; Join our channels as soon as server welcomes us.
 (define-handler (:rpl_welcome echobot prefix arguments)
   (dolist (channel *channels*)
     (send-join echobot channel)))
 
-;; if privmsg to echobot, reply to sender, otherwise to victim
-;; (which is most likely a channel that echobot has joined)
+;; If privmsg to echobot, reply to sender, otherwise to victim
+;; (which is most likely a channel that echobot has joined).
 (define-handler (:privmsg (echobot echobot) prefix arguments)
   (destructuring-bind (victim message) arguments
     (if (string-equal (nickname echobot) victim)
