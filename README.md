@@ -1,4 +1,0 @@
-# trivial-irc
-
-Test
-
