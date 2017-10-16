@@ -1,11 +1,11 @@
-;; Copyright (c) 2008 Thomas Stenhaug <thomas.stenhaug@gmail.com>.
+;; Copyright (c) 2008-2017 Thomas Stenhaug <thomas.stenhaug@gmail.com>.
 ;; See the LICENSE file for licensing information.
 
 (in-package #:trivial-irc)
 
 ;;; variables
 
-(defparameter *version* "0.0.4")
+(defparameter *version* "0.0.5")
 
 (defparameter *default-quit-message*
   (format nil "trivial-irc-~a" *version*))
