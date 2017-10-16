@@ -1,9 +1,10 @@
 @begin(section)
-@title(Overview)
+@title(index)
 
-Provide an IRC client library with simple facilities for receiving,
-handling and sending messages, and without facilities for CTCP.
-
+trivial-irc is an IRC client library with simple facilities for
+receiving, handling and sending messages, and without facilities for
+CTCP.  This is it's API documentation, extracted from the
+documentation strings in the source code.
 @end(section)
 
 @begin(section)
@@ -29,7 +30,6 @@ handling and sending messages, and without facilities for CTCP.
 @begin(section)
 @title(Generics)
 @cl:with-package[name="trivial-irc"](
-@cl:doc(macro define-handler)
 @cl:doc(generic change-nick)
 @cl:doc(generic connect)
 @cl:doc(generic connected-p)
@@ -40,6 +40,13 @@ handling and sending messages, and without facilities for CTCP.
 @cl:doc(generic send-join)
 @cl:doc(generic send-privmsg)
 @cl:doc(generic socket)
+)
+@end(section)
+
+@begin(section)
+@title(Functions)
+@cl:with-package[name="trivial-irc"](
+@cl:doc(function parse-prefix)
 @cl:doc(function send-raw-message)
 )
 @end(section)
