@@ -1,11 +1,11 @@
-;; Copyright (c) 2008 Thomas Stenhaug <thomas.stenhaug@gmail.com>.
+;; Copyright (c) 2008-2017 Thomas Stenhaug <thomas.stenhaug@gmail.com>.
 ;; See the LICENSE file for licensing information.
 
 (in-package #:trivial-irc)
 
 ;;; variables
 
-(defparameter *version* "0.0.4")
+(defparameter *version* "0.0.5")
 
 (defparameter *default-quit-message*
   (format nil "trivial-irc-~a" *version*))
@@ -20,17 +20,17 @@
 ;;; conditions
 
 (define-condition connection-closed ()
-  ((client :initarg :client))
+  ((client :initarg :client :documentation "Client whose connection was closed"))
   (:report (lambda (condition stream)
 	     (with-slots (client) condition
 	       (format stream "Connection closed for ~a" client))))
-  (:documentation "Signalled by `disconnect'.
+  (:documentation "Signalled by the @c(disconnect) function.
 
 Disconnecting is the default action whenever an error occurs, so this
 signal can for example be handled to reconnect."))
 
 (define-condition connection-lost (error)
-  ((client :initarg :client))
+  ((client :initarg :client :documentation "Client whose connection was lost"))
   (:report (lambda (condition stream)
 	     (with-slots (client) condition
 	       (format stream "Connection lost for ~a" client))))
@@ -40,35 +40,35 @@ Currently signalled when an error occurs during trying to receive a
 message from the server."))
 
 (define-condition connection-failed (error)
-  ((client :initarg :client)
-   (error :initarg error))
+  ((client :initarg :client :documentation "Client whose connection failed")
+   (error :initarg error :documentation "Reason for failure"))
   (:report (lambda (condition stream)
 	     (with-slots (client) condition
 	       (format stream "Connection failed for ~a" client))))
-  (:documentation "Signalled by `connect'."))
+  (:documentation "Signalled by @c(connect)."))
 
 ;;; macros
 
 (defmacro define-handler ((command class-spec prefix-var arguments-var)
 			  &body body)
-  "Define handling for /command/.
+  "Define handling for @c(command).
 
-This is currently a convenience for specializing on `handle'.  An
-example is the handler for PING messages (which by default is the only
-handler specialization).
+This is currently a convenience for specializing on the generic
+function @c(handle).  An example is the handler for PING
+messages (which by default is the only handler specialization).
 
---
-;; (define-handler (:ping client prefix arguments)
-;;    (send-pong client (first arguments)))
---
+@begin[lang=lisp](code)
+(define-handler (:ping client prefix arguments)
+  (send-pong client (first arguments)))
+@end(code)
 
 If you wanted to use a different variable-name for the client
 variable, you could also have written it as
 
---
-;; (define-handler (:ping (client client) prefix arguments)
-;;   (send-pong client (first arguments)))
---
+@begin[lang=lisp](code)
+(define-handler (:ping (client client) prefix arguments)
+  (send-pong client (first arguments)))
+@end(code)
 "
   (let ((%command-var (gensym "g-command-var")))
     `(defmethod handle ((,%command-var (eql ,command))
@@ -82,36 +82,36 @@ variable, you could also have written it as
 
 
 (defgeneric change-nick (client new-nickname)
-  (:documentation "Send NICK message to server, and set the `nickname'
-  of /client."))
+  (:documentation "Send NICK message to server, and set the @c(nickname)
+  of @cl:param(client)"))
 
 (defgeneric connect (client)
   (:documentation
-   "Connect and register /client/ with an IRC server.
+   "Connect and register @cl:param(client) with an IRC server.
 
 This also sets up some of the slots, and opens the log-stream."))
 
 (defgeneric connected-p (client)
   (:documentation
-   "Return `t' if /client/ is connected, `nil' otherwise."))
+   "Return @c(t) if @cl:param(client) is connected, @c(nil) otherwise."))
 
 (defgeneric disconnect (client &key message)
   (:documentation
    "Send QUIT message to server, close the socket and close the log-stream.
 
-Always signals `connection-closed'."))
+Always signals @c(connection-closed)."))
 
 (defgeneric handle (command client prefix arguments)
-  (:documentation "Called by `receive-message' after parsing the raw message.
+  (:documentation "Called by @c(receive-message) after parsing the raw message.
 
-Specialize this with the macro `define-handler' for customizing the
+Specialize on this function with the macro @c(define-handler) for customizing
 behaviour.
 
 There is a default method that spits out the unhandled message
-to `*standard-output*'."))
+to @c(*standard-output*)."))
 
 (defgeneric nickname (client)
-  (:documentation "Return current nickname of /client/."))
+  (:documentation "Return current nickname of @cl:param(client)."))
 
 (defgeneric send-join (client channel &key password)
   (:documentation "Send JOIN message."))
@@ -120,70 +120,85 @@ to `*standard-output*'."))
   (:documentation "Send PONG command to server."))
 
 (defgeneric send-privmsg (client victim message)
-  (:documentation "Send /message/ to /victim/.
-
-/victim/ can be either a channel-name or a nickname."))
+  (:documentation
+   "Send @cl:param(message) to @cl:param(victim), where @cl:param(victim) is either a
+   channel- or nick-name."))
 
 (defgeneric socket (client)
-  (:documentation "Return the /client/'s socket."))
+  (:documentation "Return the @cl:param(client)'s socket."))
 
 (defgeneric receive-message (client)
-  (:documentation "Read a message from /connnection/, parse it,
-  `handle', and return the parsed bits.
+  (:documentation "Read a message from @i(connection), parse it,
+  @c(handle), and return a list with the following 3 elements:
 
-The return value is a list with (/raw-prefix/ /command/ /parsed-parameters/), where
-
-- /raw-prefix/ is the raw prefix string, or `nil' if prefix wasn't present,
-- /command/ is a keyword with a name corresponding to the command from the RFC and
-- /parsed-parameters/ is a list of strings representing the arguments in the message.
+@begin(enum)
+@item(the raw prefix string, or @c(nil) if prefix wasn't present)
+@item(@i(command) is a keyword with a name corresponding to the command from the RFC and)
+@item(@i(parsed-parameters) is a list of strings representing the arguments in the message.)
+@end(enum)
 
 If an error occurs during the reading, the client will be
-disconnected, and the `connection-closed' will be signalled."))
+disconnected, and @c(connection-closed) will be signalled."))
 
 ;;; class
 
 (defclass client ()
-  ((log-pathname
-    :initarg :log-pathname
-    :initform nil)
-   (log-stream
-    :initform nil)
-   (nickname
+  ((nickname
     :initarg :nickname
     :reader nickname
-    :initform (error "must supply :nickname"))
+    :initform (error "must supply :nickname")
+    :documentation "Nickname of client (mandatory).  Sent at beginning
+    of connection, and by @c(change-nick)")
    (password
     :initarg :password
-    :initform nil)
-   (port
-    :initarg :port
-    :initform 6667)
-   (realname
-    :initarg :realname
-    :initform nil)
-   (server
-    :initarg :server
-    :initform (error "must supply :server"))
-   (socket
-    :initarg :socket
-    :reader socket)
+    :initform nil
+    :documentation "Password used during registration (optional)")
    (username
     :initarg :username
-    :initform nil))
+    :initform nil
+    :documentation "Username sent at beginning of connection. Defaults
+    to nickname.")
+   (realname
+    :initarg :realname
+    :initform nil
+    :documentation "Realname sent at beginning of connection.
+    Defaults to username.")
+   (server
+    :initarg :server
+    :initform (error "must supply :server")
+    :documentation "Address of the IRC server")   
+   (port
+    :initarg :port
+    :initform 6667
+    :documentation "Port of client connection")
+   (socket
+    :initarg :socket
+    :initform nil
+    :reader socket
+    :documentation "Socket of an active connection")
+   (log-pathname
+    :initarg :log-pathname
+    :initform nil
+    :documentation "Pathname of log-file")
+   (log-stream
+    :initform nil
+    :documentation "Stream of log-file"))
   (:documentation "A client connection to an IRC server.
 
 Valid initargs are:
 
-- `:nickname' -- the nickname  use when connecting (required)
-- `:server' -- the hostname of the server to connect to as a string (required)
-- `:port' -- the port to connect to as an integer (optional)
-- `:username' -- the username to register with (optional)
-- `:realname' -- the realname to register with (optional)
-- `:password' -- the password to regiseter with (optional)
-- `:log-pathname' -- pathname for packet-log pathname (optional)
+@begin(list)
+@item(@c(:nickname) -- the nickname  use when connecting (required))
+@item(@c(:server) -- the hostname of the server to connect to as a string (required))
+@item(@c(:port) -- the port to connect to as an integer (optional))
+@item(@c(:username) -- the username to register with (optional))
+@item(@c(:realname) -- the realname to register with (optional))
+@item(@c(:password) -- the password to regiseter with (optional))
+@item(@c(:log-pathname) -- pathname for packet-log pathname (optional))
+@end(list)
 
-Please note that you call `connect' on an instance of `client', instead of
-having `connect' return a an instance instance."))
+Please note that you call @c(connect) on a @c(client) instance, rather than
+having @c(connect) return a @c(client) instance."))
 
 ;;; implementation
 
@@ -201,7 +216,8 @@ having `connect' return a an instance instance."))
 			     :direction :output
 			     :if-exists :append
 			     :if-does-not-exist :create)))
-    ;; try to connect, signal connection-failed if
+    ;; Try to connect and register, signal connection-failed if an
+    ;; error occurs.
     (handler-case
 	(progn 
 	  (setf socket
@@ -244,8 +260,8 @@ having `connect' return a an instance instance."))
     (record client raw-message)
     (destructuring-bind (prefix command arguments)
 	(parse-raw-message raw-message)
-      (handle command client prefix arguments))
-    raw-message))
+      (handle command client prefix arguments)
+      (list prefix command arguments))))
 
 (defmethod send-join ((client client) channel &key password)
   (send-raw-message client
@@ -268,7 +284,7 @@ having `connect' return a an instance instance."))
 ;;; raw-message
 
 (defun receive-raw-message (client)
-  "Receive and return a single, raw message from /client/.
+  "Receive and return a single, raw message from @cl:param(client).
 
 If any errors occur during the reading, the connection is silently
 shut down."
@@ -283,7 +299,7 @@ shut down."
     (error () (error 'connection-lost :client client))))
 
 (defun send-raw-message (client raw-message)
-  "Send /raw-message/ and CRLF to the socket associated with /client/.
+  "Send @cl:param(raw-message) and CRLF to the socket associated with @cl:param(client).
 
 Outside of the few send-* functions, this is what you have to use to
 send messages to the server."
@@ -297,14 +313,15 @@ send messages to the server."
 
 (defun parse-raw-message (raw-message)
   "Return a list on the form (prefix command arguments).
+@begin(enum)
+@item(prefix) can be @c(nil), or servername / ( nickname [ [ \"!\" user ] \"@\" host ]
+See also the @c(parse-prefix) function.
 
-/prefix/ can be `nil', or servername / ( nickname [ [ \"!\" user ] \"@\" host ]
-See also the `parse-prefix' function.
+@item(command) is a keyword either made from the alpha-characters, or a
+keyword looked up with @c(find-reply-name).
 
-/command/ is a keyword either made from the alpha-characters, or a
-keyword looked up with `find-reply-name'.
-
-/arguments/ is a list of the command arguments."
+@item(arguments) is a list of the command arguments.
+@end(enum)"
   (multiple-value-bind (match-string match-vector)
       (cl-ppcre:scan-to-strings *message-scanner* raw-message)
     (declare (ignore match-string))
@@ -356,30 +373,23 @@ Called by `connect' during registration."
       (send-raw-message client
 			(format nil "QUIT :~a" message)))))
 
-(defun prefix-nickname (prefix)
-  "Return the nickname in extracted from /prefix/."  
-  (first (parse-prefix prefix)))
-
-(defun prefix-servername (prefix)
-  "Return the servername extracted from /prefix/."  
-  (first (parse-prefix prefix)))
-
-(defun servername-or-nickname (prefix)
-  "Return the servername or nickname from /prefix-string/."
-  (first (parse-prefix prefix)))
-
 (defun parse-prefix (prefix)
   "Return a list of the components in prefix.
 
-It is a list on the form ( /server-or-nickname/ /username/ /host/) where
-
-- /servername-or-nickname/ is a servername or a nickname,
-- /username/ is a username, or `nil'
-- /host/ is a hostname, or `nil'
-
-This can potentially be used to build other abstractions later."
+The elements of the list are as follows:
+@begin(list)
+@item(servername or nickname as string)
+@item(username string, or @c(nil))
+@item(a hostname string, or @c(nil))
+@end(list)"
   (when prefix
     (cl-ppcre:split "(!|@)" prefix)))
+
+(defun prefix-nickname (prefix)
+  (first (parse-prefix prefix)))
+
+(defun prefix-servername (prefix)
+  (first (parse-prefix prefix)))
 
 (defun record (client string)
   (with-slots (log-stream) client

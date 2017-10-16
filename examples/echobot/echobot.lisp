@@ -1,4 +1,4 @@
-;; Copyright (c) 2008 Thomas Stenhaug <thomas.stenhaug@gmail.com>
+;; Copyright (c) 2008-2017 Thomas Stenhaug <thomas.stenhaug@gmail.com>
 
 ;; See the LICENSE file for licensing information.
 
@@ -35,10 +35,10 @@
   ()
   (:documentation "A simple irc-bot that echoes anything it sees.
 
-Valid initargs are the same as for `trivial-irc:client'."))
+Valid initargs are the same as for @c(trivial-irc:client)."))
 
 (defun start ()
-  "Set up echobot, bind it to `*echobot*' and enter the `receive-loop'."
+  "Set up echobot, bind it to @c(*echobot*) and enter the @c(receive-loop)."
   (assert (null *echobot*))
   (setf *echobot* (make-instance 'echobot
 				 :log-pathname *log-pathname*
@@ -57,26 +57,26 @@ Valid initargs are the same as for `trivial-irc:client'."))
   (stop))
 
 (defun stop ()
-  "Stop and `disconnect' the echobot."
+  "Stop and @c(disconnect) the echobot."
   (ignore-errors (disconnect *echobot*))
   (setf *echobot* nil))
 
 (defun receive-loop ()
   "Receive messages until interrupted."
   (with-simple-restart (abort "Exit from receive-loop without quitting")
-  (loop
-    (with-simple-restart (continue "Continue echobot recieve-loop")
-      (receive-message *echobot*)))))
+    (loop
+       (with-simple-restart (continue "Continue echobot receive-loop")
+         (receive-message *echobot*)))))
 
 ;;; handlers
 
-;; join our channel as soon as server welcomes us
+;; Join our channels as soon as server welcomes us.
 (define-handler (:rpl_welcome echobot prefix arguments)
   (dolist (channel *channels*)
     (send-join echobot channel)))
 
-;; if privmsg to echobot, reply to sender, otherwise to victim
-;; (which is most likely a channel that echobot has joined)
+;; If privmsg to echobot, reply to sender, otherwise to victim
+;; (which is most likely a channel that echobot has joined).
 (define-handler (:privmsg (echobot echobot) prefix arguments)
   (destructuring-bind (victim message) arguments
     (if (string-equal (nickname echobot) victim)

@@ -1,4 +1,4 @@
-;; Copyright (c) 2008 Thomas Stenhaug <thomas.stenhaug@gmail.com>.
+;; Copyright (c) 2008-2017 Thomas Stenhaug <thomas.stenhaug@gmail.com>.
 ;; See the LICENSE file for licensing information.
 
 (in-package #:trivial-irc)

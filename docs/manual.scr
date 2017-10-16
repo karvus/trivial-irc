@@ -1,0 +1,62 @@
+@begin(section)
+@title(index)
+
+trivial-irc is an IRC client library with simple facilities for
+receiving, handling and sending messages, and without facilities for
+CTCP.  This is its API documentation, extracted from the
+documentation strings in the source code.
+@end(section)
+
+@begin(section)
+@title(Reference)
+
+@begin(section)
+@title(Conditions)
+
+@cl:with-package[name="trivial-irc"](
+@cl:doc(condition connection-closed)
+@cl:doc(condition connection-failed)
+@cl:doc(condition connection-lost)
+)
+@end(section)
+
+@begin(section)
+@title(Macros)
+@cl:with-package[name="trivial-irc"](
+@cl:doc(macro define-handler)
+)
+@end(section)
+
+@begin(section)
+@title(Generics)
+@cl:with-package[name="trivial-irc"](
+@cl:doc(generic change-nick)
+@cl:doc(generic connect)
+@cl:doc(generic connected-p)
+@cl:doc(generic disconnect)
+@cl:doc(generic handle)
+@cl:doc(generic nickname)
+@cl:doc(generic receive-message)
+@cl:doc(generic send-join)
+@cl:doc(generic send-privmsg)
+@cl:doc(generic socket)
+)
+@end(section)
+
+@begin(section)
+@title(Functions)
+@cl:with-package[name="trivial-irc"](
+@cl:doc(function parse-prefix)
+@cl:doc(function send-raw-message)
+)
+@end(section)
+
+@begin(section)
+@title(Class)
+@cl:with-package[name="trivial-irc"](
+@cl:doc(class client)
+)
+@end(section)
+
+
+@end(section)

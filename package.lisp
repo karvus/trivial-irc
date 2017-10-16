@@ -1,4 +1,4 @@
-;; Copyright (c) 2008 Thomas Stenhaug <thomas.stenhaug@gmail.com>.
+;; Copyright (c) 2008-2017 Thomas Stenhaug <thomas.stenhaug@gmail.com>.
 ;; See the LICENSE file for licensing information.
 
 (in-package #:cl-user)
@@ -25,7 +25,6 @@
    #:send-privmsg
    #:send-pong
    #:send-raw-message
-   #:server-or-nick
    #:user
    )
   (:documentation "Trivial IRC client library.
